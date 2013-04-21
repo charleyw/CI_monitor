@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bootstrap 101 Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="css/popup.css" rel="stylesheet" media="screen">
+    <script src="js/jquery-1.9.1.js"></script>
+    <script src="js/bootstrap.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <li><span class="badge" title="Build number">0</span></li>
+      <li><span class="label label-success"> </span></li>
+      <li><span class="label label-warning">Warning</span></li>
+      <li><span class="label label-important">Important</span></li>
+      <div id="buildList">
+        <div class="buildItem">
+          <span class="buildNum label" title="Build number">0</span>
+          <span class="buildKey" title="Build key">name</span>
+        </div>
+      </div>
+      <div id="test1"></div>
+      <p id="localStorage">1233</p>
+      <hr>
+      <div id="buildInfoForm">
+        <fieldset>
+          <label>Server Url</label>
+          <input id="serverUrl" type="text"></input>
+        </fieldset>
+        <fieldset>
+          <label>Project Key</label>
+          <input id="projectKey" type="text"></input>
+        </fieldset>
+      </div>
+      <button id="add" class="btn">Add new</button>
+      <button id="update" class="btn">update</button>
+    </div>
+    <script type="text/javascript" src='popup.js'></script>
+  </body>
+</html>

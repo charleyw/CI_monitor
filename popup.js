@@ -1,3 +1,5 @@
+var db = window.localStorage;
+
 function testStorage(){
 	if (window.localStorage) {
 		$( ".container #localStorage" ).html( "true" );
@@ -9,6 +11,11 @@ function testStorage(){
 
 function initPopup(){
 	alert("xxx");
+	var keys;
+	if( db.keys == null ){
+		keys = new Array;
+		db.setItem( "keys", JSON.stringify(keys));
+	}
 	$( "#add" ).on( "click", function( event ) {
 		var serverUrl = $( "#serverUrl" ).val(),
 			projectKey = $( "#projectKey" ).val();
@@ -39,25 +46,28 @@ function getBuildStatus(){
 	// 		updateBuildItem("test", jsonResponse.number, status);
 	// 	}
 	// });
+	keys = JSON.parse(db.keys);
+	keys.forEach(function(key){
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", window.localStorage.getItem( "builds" ), true);
+		xhr.onreadystatechange = function() {
+	  		if (xhr.readyState == 4) {
+	  			alert(xhr.responseText);
+	    	// JSON.parse does not evaluate the attacker's scripts.
+	    		var resp = JSON.parse(xhr.responseText),
+	    			status;
+				if ( resp.building ){
+					status = "building"; 
+				}else{
+					status = resp.result;
+				}
+				alert("status:" + status.toLowerCase() +" num:" + resp.number);
+				updateBuildItem("test", resp.number, status.toLowerCase());
+	  		}
+		}
+		xhr.send();		
+	});
 
-	var xhr = new XMLHttpRequest();
-	xhr.open("GET", window.localStorage.getItem( "builds" ), true);
-	xhr.onreadystatechange = function() {
-  		if (xhr.readyState == 4) {
-  			alert(xhr.responseText);
-    	// JSON.parse does not evaluate the attacker's scripts.
-    		var resp = JSON.parse(xhr.responseText),
-    			status;
-			if ( resp.building ){
-				status = "building"; 
-			}else{
-				status = resp.result;
-			}
-			alert("status:" + status.toLowerCase() +" num:" + resp.number);
-			updateBuildItem("test", resp.number, status.toLowerCase());
-  		}
-	}
-	xhr.send();
 };
 
 function updateBuildItem( buildKey, buildNumber, status ){
@@ -70,6 +80,10 @@ function addBuildItem( buildKey, buildNumber, status ){
 		buildItemDiv = '<div id="buildKey" class="buildItem"><span class="number default" title="Build number">buildNum</span><span class="key" title="Build key">buildKey</span></div>';
 	$( "#buildList" ).append( buildItemDiv.replace( /buildNum/, buildNumber ).replace( /buildKey/g, buildKey ) );
 };
+
+function createBuildItem(){
+	
+}
 
 initPopup();
 testStorage();
